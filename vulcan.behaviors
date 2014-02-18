@@ -1,0 +1,12 @@
+{:+
+ {:app [(:lt.objs.plugins/load-js ["vulcan_compiled.js"])]
+
+  :clients []
+
+  :firefox.client.common [:lt.plugins.vulcan/connect!
+                          :lt.plugins.vulcan/try-connect!
+                          :lt.plugins.vulcan/close]
+
+  :firefox.client [:lt.plugins.vulcan/client.settings.remote
+                   :lt.plugins.vulcan/init-remote-session
+                   (:lt.object/add-tag :firefox.client.common)]}}
