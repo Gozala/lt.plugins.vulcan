@@ -3,10 +3,20 @@
 
   :clients []
 
-  :firefox.client.common [:lt.plugins.vulcan/connect!
-                          :lt.plugins.vulcan/try-connect!
-                          :lt.plugins.vulcan/close]
+  :firefox.client [:lt.plugins.vulcan/connect!
+                   :lt.plugins.vulcan/try-connect!
 
-  :firefox.client [:lt.plugins.vulcan/client.settings.remote
-                   :lt.plugins.vulcan/init-remote-session
-                   (:lt.object/add-tag :firefox.client.common)]}}
+                   :lt.plugins.vulcan/client.settings
+
+                   :lt.plugins.vulcan/close
+                   :lt.plugins.vulcan/connected
+                   :lt.plugins.vulcan/connection-failed
+
+                   :lt.plugins.vulcan/init-session
+                   :lt.plugins.vulcan/set-session!
+
+                   :lt.plugins.vulcan/send!]
+
+  :firefox.lang [:lt.plugins.vulcan/connect!]
+  }
+ }

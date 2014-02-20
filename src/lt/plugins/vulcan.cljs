@@ -22,13 +22,14 @@
             [lt.util.cljs :refer [js->clj]])
     (:require-macros [lt.macros :refer [behavior defui]]))
 
-(def bencode (load/node-module "bencode"))
+(def *plugin-path* (:dir (plugins/by-name "vulcan")))
+(def *firefox-client-path* (files/join *plugin-path*
+                                       "node_modules/firefox-client"))
+
 (def Buffer (js/require "buffer"))
 (def net (js/require "net"))
+(def FirefoxClient (js/require *firefox-client-path*))
 
-(defn create-buffer [size]
-  (let [b (.-Buffer Buffer)]
-    (new b size)))
 
 ;; Adds a connection to the Light Table's "Add connection" UI.
 (clients-ui/add-connector
@@ -41,7 +42,7 @@
 (defui make-connection-input []
   [:input {:type "text"
            :placeholder "host:port"
-           :value "localhost:"}]
+           :value "localhost:6000"}]
   :focus (fn [] (context/in! :popup.input))
   :blur (fn [] (context/out! :popup.input)))
 
@@ -65,13 +66,13 @@
                                     [:label "Server: "] input]
                              :buttons [{:label "cancel"}
                                        {:label "connect"
-                                        :action (fn [] (connect-to-remote (dom/val input)))}]})]
+                                        :action (fn [] (connect-to (dom/val input)))}]})]
     (dom/focus input)
     (.setSelectionRange input 1000 1000)))
 
 
 
-(defn connect-to-remote
+(defn connect-to
   "Utility function invoked when UI displayed by `show-connection-ui` receives an
   input. Function parses given `address`, writes configuration into global state
   and dispatches :connect! event"
@@ -81,54 +82,60 @@
       (let [client (clients/client! :firefox.client)]
         (object/merge! client {:port port
                                :host host
-                               :name address})
+                               :name (str "Firefox " address)})
         (object/raise client :connect!)))))
 
-
-(behavior
- ::init-remote-session
- :triggers #{:new-session}
- :reaction (fn [this session]
-             (object/merge! this {:session session})))
-
-(behavior
- ::client.settings.remote
- :triggers #{:client.settings}
- :reaction (fn [this info]
-             (clients/handle-connection! info)
-             (object/merge! this {:dir nil})))
 
 (behavior
  ;; GUESS: Action attempt to reconnect.
  ::try-connect!
  :triggers #{:try-connect!}
- :reaction (fn [this _]
-             (when (:port @this)
-               (object/raise this :connect!))))
+ :reaction (fn [client _]
+             (when (:port @client)
+               (object/raise client :connect!))))
 
 (behavior
  ;; Action triggered from the LT connect to firefox UI.
  ::connect!
  :triggers #{:connect!}
  :reaction (fn [client]
-             (let [socket (connect-to (:host @client "localhost")
-                                      (:port @client)
-                                      client)]
-               (object/merge! this {:socket socket})
-               (notifos/working "Connecting to firefox"))))
+             (notifos/working "Connecting to a Firefox")
+             (object/merge! client {:socket (FirefoxClient.)})
+             (connect client)))
 
 (behavior
- ::connect-fail
- :triggers #{::connect-fail}
- :reaction (fn [this]
-             (object/raise this :close!)
-             (notifos/done-working "Failed to connect to firefox")))
+ ::connection-failed
+ :triggers #{:connection-failed}
+ :reaction (fn [client error]
+             (object/raise client :close!)
+             (if (= (.-code error) "ECONNREFUSED")
+               (notifos/done-working "Firefox isn't listening for connections")
+               (notifos/done-working "Failed to connect to a Firefox"))))
+
+(behavior
+ ::set-session!
+ :triggers #{:set-session!}
+ :reaction (fn [client session]
+             (object/merge! client {:session session})
+             (notifos/done-working "Firefox session is set")))
+
+(behavior
+ ::init-session
+ :triggers #{:init-session}
+ :reaction (fn [client]
+             (notifos/working "Setting up Firefox session")
+             (.selectedTab (:socket @client)
+                           (fn [error tab]
+                             (if error
+                               (object/raise client :connection-failed error)
+                               (object/raise client :set-session! tab))))))
 
 (behavior
  ::connected
- :triggers #{::connected}
- :reaction (fn [this]
-             (notifos/done-working)))
+ :triggers #{:connect}
+ :reaction (fn [client]
+             ;(clients/handle-connection! @client)
+             (object/raise client :init-session)))
 
 (behavior
  ::close
@@ -136,41 +143,46 @@
  :reaction clients/rem!)
 
 
-(behavior
- ::receive-message!
- :triggers #{:receive-message!}
- :reaction (fn [client]
-             (let [message (:buffer @client)]
-               message)))
 
-(defn parse-message
-  [buffer]
-  (.parse js/JSON (.toString buffer "utf-8")))
-
-
-(defn connect-to [host port client]
+(defn connect [client]
   "Creates a client connection on given host & port.
   When connected ::connect behavior is triggered.
   When connection fails ::connect-fail behavior is triggered
   When connection is clsoed ::close is triggered"
-  (let [socket (.connect net port host)]
-    (.on socket "connect" #(when @client (object/raise client ::connected)))
-    (.on socket "error" #(when @client (object/raise client ::connect-fail)))
-    (.on socket "data" (fn [data]
-                         (when @client
-                           (swap! (:buffer @client) (fn [] (parse-message data)))
-                           (object/raise client ::receive-message!))))
-    (.on socket "close" #(when @client (object/raise client :close!)))
-    socket))
+  (.on (:socket @client) "end" #(object/raise client :close!))
+  (.on (:socket @client) "error" #(object/raise client :connection-failed %))
+  (.connect (:socket @client)
+            (:port @client)
+            (:host @client "localhost")
+            #(when-not % (object/raise client :connect))))
 
 
 
-(defn send [client message]
-  (let [session (:session @client)
-        message (merge (when session {:session session})
-                       message)]
-    (send* client message)))
 
-(defn send* [client message]
-  (.write (:socket @client)
-          (encode message)))
+
+
+(object/object* ::firefox-lang
+                :tags #{}
+                :behaviors [::eval!]
+                :triggers #{:eval!})
+
+(def lang (object/create ::firefox-lang))
+
+(defn handle-message [client message]
+  (print message))
+
+(behavior
+ ::send!
+ :triggers #{:send!}
+ :reaction (fn [client message]
+             (handle-message client message)
+             (when (= "editor.eval.js" (:command message))
+               ;(object/raise this :changelive! (js->clj (last msg) :keywordize-keys true))
+               )
+             ))
+
+(behavior
+ ::client.settings
+ :triggers #{:client.settings}
+ :reaction (fn [client info]
+             (clients/handle-connection! info)))
