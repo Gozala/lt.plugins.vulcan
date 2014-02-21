@@ -122,7 +122,9 @@
  :reaction (fn [client session]
              (object/merge! client {:session session
                                     :type "Remote Debugging Protocol"
+                                    :sheets {}
                                     :commands #{:editor.eval.js
+                                                :editor.eval.css
                                                 :editor.eval.cljs.exec}})
              (notifos/done-working "Firefox session is set")))
 
@@ -176,6 +178,27 @@
 
 (defn handle-message [client message]
   (print message))
+
+(behavior
+ ::editor.eval.css
+ :triggers #{::editor.eval.css}
+ :reaction (fn [client request callback]
+             (let [id (keyword (string/replace (str "local-" (:name request)) #"\." "-"))
+                   sheet (id (:sheets @client))
+                   sheets (.-StyleSheets (:session @client))]
+
+               (if sheet
+                 (.update sheet
+                          (:code request)
+                          (fn [error] error))
+                 (.addStyleSheet sheets
+                                 (:code request)
+                                 (fn [error sheet]
+                                   (object/merge! client
+                                                  {:sheets (assoc
+                                                             (:sheets @client)
+                                                             id
+                                                             sheet)})))))))
 
 (behavior
  ::editor.eval.cljs.exec
