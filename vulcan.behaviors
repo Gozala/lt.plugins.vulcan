@@ -17,6 +17,7 @@
 
                    :lt.plugins.vulcan/send!
                    :lt.plugins.vulcan/editor.eval.js
+                   :lt.plugins.vulcan/editor.eval.cljs.exec
                    ]
 
   :firefox.lang [:lt.plugins.vulcan/connect!]

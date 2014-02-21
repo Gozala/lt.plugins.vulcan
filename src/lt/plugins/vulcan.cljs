@@ -122,7 +122,8 @@
  :reaction (fn [client session]
              (object/merge! client {:session session
                                     :type "Remote Debugging Protocol"
-                                    :commands #{:editor.eval.js}})
+                                    :commands #{:editor.eval.js
+                                                :editor.eval.cljs.exec}})
              (notifos/done-working "Firefox session is set")))
 
 (behavior
@@ -175,6 +176,29 @@
 
 (defn handle-message [client message]
   (print message))
+
+(behavior
+ ::editor.eval.cljs.exec
+ :triggers #{::editor.eval.cljs.exec}
+ :reaction (fn [client requests]
+             (doseq [request (:results requests)]
+               (let [console (.-Console (:session @client))
+                     info (merge (:meta requests) (:meta request))
+                     editor (object/by-id (:ed-id request))]
+                 (.evaluateJS console
+                              (:code request)
+                              (fn [error response]
+                                (if (.-exception response)
+                                  (object/raise editor
+                                                :editor.eval.cljs.exception
+                                                {:meta info
+                                                 :ex (.-preview (.-obj (.-exception response)))})
+                                  (object/raise editor
+                                                :editor.eval.cljs.result
+                                                {:meta info
+                                                 :result (eval/cljs-result-format (.-result response))}))))))))
+
+
 
 (behavior
  ::editor.eval.js
