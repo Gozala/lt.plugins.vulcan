@@ -43,6 +43,7 @@ goog.require('lt.objs.console');
 goog.require('lt.objs.eval');
 goog.require('lt.objs.clients');
 goog.require('lt.objs.command');
+lt.plugins.vulcan._STAR_ns_name_STAR_ = cljs.core.name.call(null,new cljs.core.Keyword(null,"lt.plugins.vulcan","lt.plugins.vulcan",1596835273));
 lt.plugins.vulcan._STAR_plugin_path_STAR_ = new cljs.core.Keyword(null,"dir","dir",1014003711).cljs$core$IFn$_invoke$arity$1(lt.objs.plugins.by_name.call(null,"vulcan"));
 lt.plugins.vulcan._STAR_firefox_client_path_STAR_ = lt.objs.files.join.call(null,lt.plugins.vulcan._STAR_plugin_path_STAR_,"node_modules/firefox-client");
 lt.plugins.vulcan.Buffer = require("buffer");
@@ -50,47 +51,47 @@ lt.plugins.vulcan.net = require("net");
 lt.plugins.vulcan.FirefoxClient = require(lt.plugins.vulcan._STAR_firefox_client_path_STAR_);
 lt.objs.sidebar.clients.add_connector.call(null,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"name","name",1017277949),"Firefox",new cljs.core.Keyword(null,"desc","desc",1016984067),"Enter in the host:port address Firefox listening on",new cljs.core.Keyword(null,"connect","connect",1965255772),(function (){return lt.plugins.vulcan.show_connection_ui.call(null);
 })], null));
-lt.plugins.vulcan.make_connection_input = (function make_connection_input(){var e__8120__auto__ = crate.core.html.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"input","input",1114262332),new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"type","type",1017479852),"text",new cljs.core.Keyword(null,"placeholder","placeholder",1612151013),"host:port",new cljs.core.Keyword(null,"value","value",1125876963),"localhost:6000"], null)], null));var seq__9210_9220 = cljs.core.seq.call(null,cljs.core.partition.call(null,2,new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"focus","focus",1111509066),(function (){return lt.objs.context.in_BANG_.call(null,new cljs.core.Keyword(null,"popup.input","popup.input",4788025210));
+lt.plugins.vulcan.make_connection_input = (function make_connection_input(){var e__8120__auto__ = crate.core.html.call(null,new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"input","input",1114262332),new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"type","type",1017479852),"text",new cljs.core.Keyword(null,"placeholder","placeholder",1612151013),"host:port",new cljs.core.Keyword(null,"value","value",1125876963),"localhost:6000"], null)], null));var seq__10131_10142 = cljs.core.seq.call(null,cljs.core.partition.call(null,2,new cljs.core.PersistentVector(null, 4, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"focus","focus",1111509066),(function (){return lt.objs.context.in_BANG_.call(null,new cljs.core.Keyword(null,"popup.input","popup.input",4788025210));
 }),new cljs.core.Keyword(null,"blur","blur",1016931289),(function (){return lt.objs.context.out_BANG_.call(null,new cljs.core.Keyword(null,"popup.input","popup.input",4788025210));
-})], null)));var chunk__9211_9221 = null;var count__9212_9222 = 0;var i__9213_9223 = 0;while(true){
-if((i__9213_9223 < count__9212_9222))
-{var vec__9214_9224 = cljs.core._nth.call(null,chunk__9211_9221,i__9213_9223);var ev__8121__auto___9225 = cljs.core.nth.call(null,vec__9214_9224,0,null);var func__8122__auto___9226 = cljs.core.nth.call(null,vec__9214_9224,1,null);lt.util.dom.on.call(null,e__8120__auto__,ev__8121__auto___9225,func__8122__auto___9226);
+})], null)));var chunk__10132_10143 = null;var count__10133_10144 = 0;var i__10134_10145 = 0;while(true){
+if((i__10134_10145 < count__10133_10144))
+{var vec__10135_10146 = cljs.core._nth.call(null,chunk__10132_10143,i__10134_10145);var ev__8121__auto___10147 = cljs.core.nth.call(null,vec__10135_10146,0,null);var func__8122__auto___10148 = cljs.core.nth.call(null,vec__10135_10146,1,null);lt.util.dom.on.call(null,e__8120__auto__,ev__8121__auto___10147,func__8122__auto___10148);
 {
-var G__9227 = seq__9210_9220;
-var G__9228 = chunk__9211_9221;
-var G__9229 = count__9212_9222;
-var G__9230 = (i__9213_9223 + 1);
-seq__9210_9220 = G__9227;
-chunk__9211_9221 = G__9228;
-count__9212_9222 = G__9229;
-i__9213_9223 = G__9230;
+var G__10149 = seq__10131_10142;
+var G__10150 = chunk__10132_10143;
+var G__10151 = count__10133_10144;
+var G__10152 = (i__10134_10145 + 1);
+seq__10131_10142 = G__10149;
+chunk__10132_10143 = G__10150;
+count__10133_10144 = G__10151;
+i__10134_10145 = G__10152;
 continue;
 }
 } else
-{var temp__4092__auto___9231 = cljs.core.seq.call(null,seq__9210_9220);if(temp__4092__auto___9231)
-{var seq__9210_9232__$1 = temp__4092__auto___9231;if(cljs.core.chunked_seq_QMARK_.call(null,seq__9210_9232__$1))
-{var c__7500__auto___9233 = cljs.core.chunk_first.call(null,seq__9210_9232__$1);{
-var G__9234 = cljs.core.chunk_rest.call(null,seq__9210_9232__$1);
-var G__9235 = c__7500__auto___9233;
-var G__9236 = cljs.core.count.call(null,c__7500__auto___9233);
-var G__9237 = 0;
-seq__9210_9220 = G__9234;
-chunk__9211_9221 = G__9235;
-count__9212_9222 = G__9236;
-i__9213_9223 = G__9237;
+{var temp__4092__auto___10153 = cljs.core.seq.call(null,seq__10131_10142);if(temp__4092__auto___10153)
+{var seq__10131_10154__$1 = temp__4092__auto___10153;if(cljs.core.chunked_seq_QMARK_.call(null,seq__10131_10154__$1))
+{var c__7500__auto___10155 = cljs.core.chunk_first.call(null,seq__10131_10154__$1);{
+var G__10156 = cljs.core.chunk_rest.call(null,seq__10131_10154__$1);
+var G__10157 = c__7500__auto___10155;
+var G__10158 = cljs.core.count.call(null,c__7500__auto___10155);
+var G__10159 = 0;
+seq__10131_10142 = G__10156;
+chunk__10132_10143 = G__10157;
+count__10133_10144 = G__10158;
+i__10134_10145 = G__10159;
 continue;
 }
 } else
-{var vec__9215_9238 = cljs.core.first.call(null,seq__9210_9232__$1);var ev__8121__auto___9239 = cljs.core.nth.call(null,vec__9215_9238,0,null);var func__8122__auto___9240 = cljs.core.nth.call(null,vec__9215_9238,1,null);lt.util.dom.on.call(null,e__8120__auto__,ev__8121__auto___9239,func__8122__auto___9240);
+{var vec__10136_10160 = cljs.core.first.call(null,seq__10131_10154__$1);var ev__8121__auto___10161 = cljs.core.nth.call(null,vec__10136_10160,0,null);var func__8122__auto___10162 = cljs.core.nth.call(null,vec__10136_10160,1,null);lt.util.dom.on.call(null,e__8120__auto__,ev__8121__auto___10161,func__8122__auto___10162);
 {
-var G__9241 = cljs.core.next.call(null,seq__9210_9232__$1);
-var G__9242 = null;
-var G__9243 = 0;
-var G__9244 = 0;
-seq__9210_9220 = G__9241;
-chunk__9211_9221 = G__9242;
-count__9212_9222 = G__9243;
-i__9213_9223 = G__9244;
+var G__10163 = cljs.core.next.call(null,seq__10131_10154__$1);
+var G__10164 = null;
+var G__10165 = 0;
+var G__10166 = 0;
+seq__10131_10142 = G__10163;
+chunk__10132_10143 = G__10164;
+count__10133_10144 = G__10165;
+i__10134_10145 = G__10166;
 continue;
 }
 }
@@ -116,7 +117,7 @@ return input.setSelectionRange(1000,1000);
 * input. Function parses given `address`, writes configuration into global state
 * and dispatches :connect! event
 */
-lt.plugins.vulcan.connect_to = (function connect_to(address){var vec__9217 = clojure.string.split.call(null,address,":");var host = cljs.core.nth.call(null,vec__9217,0,null);var port = cljs.core.nth.call(null,vec__9217,1,null);if(cljs.core.truth_((function (){var and__6746__auto__ = host;if(cljs.core.truth_(and__6746__auto__))
+lt.plugins.vulcan.connect_to = (function connect_to(address){var vec__10138 = clojure.string.split.call(null,address,":");var host = cljs.core.nth.call(null,vec__10138,0,null);var port = cljs.core.nth.call(null,vec__10138,1,null);if(cljs.core.truth_((function (){var and__6746__auto__ = host;if(cljs.core.truth_(and__6746__auto__))
 {return port;
 } else
 {return and__6746__auto__;
@@ -148,7 +149,7 @@ if(cljs.core._EQ_.call(null,error.code,"ECONNREFUSED"))
 }
 });
 lt.object.behavior_STAR_.call(null,new cljs.core.Keyword("lt.plugins.vulcan","connection-failed","lt.plugins.vulcan/connection-failed",699872774),new cljs.core.Keyword(null,"reaction","reaction",4441361819),lt.plugins.vulcan.__BEH__connection_failed,new cljs.core.Keyword(null,"triggers","triggers",2516997421),new cljs.core.PersistentHashSet(null, new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"connection-failed","connection-failed",2408881534),null], null), null));
-lt.plugins.vulcan.__BEH__set_session_BANG_ = (function __BEH__set_session_BANG_(client,session){lt.object.merge_BANG_.call(null,client,new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"session","session",2998892040),session], null));
+lt.plugins.vulcan.__BEH__set_session_BANG_ = (function __BEH__set_session_BANG_(client,session){lt.object.merge_BANG_.call(null,client,new cljs.core.PersistentArrayMap(null, 3, [new cljs.core.Keyword(null,"session","session",2998892040),session,new cljs.core.Keyword(null,"type","type",1017479852),"Remote Debugging Protocol",new cljs.core.Keyword(null,"commands","commands",4706336250),new cljs.core.PersistentHashSet(null, new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"editor.eval.js","editor.eval.js",1847417804),null], null), null)], null));
 return lt.objs.notifos.done_working.call(null,"Firefox session is set");
 });
 lt.object.behavior_STAR_.call(null,new cljs.core.Keyword("lt.plugins.vulcan","set-session!","lt.plugins.vulcan/set-session!",1514435820),new cljs.core.Keyword(null,"reaction","reaction",4441361819),lt.plugins.vulcan.__BEH__set_session_BANG_,new cljs.core.Keyword(null,"triggers","triggers",2516997421),new cljs.core.PersistentHashSet(null, new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"set-session!","set-session!",2223331528),null], null), null));
@@ -167,25 +168,30 @@ lt.object.behavior_STAR_.call(null,new cljs.core.Keyword("lt.plugins.vulcan","co
 lt.object.behavior_STAR_.call(null,new cljs.core.Keyword("lt.plugins.vulcan","close","lt.plugins.vulcan/close",4785105418),new cljs.core.Keyword(null,"reaction","reaction",4441361819),lt.objs.clients.rem_BANG_,new cljs.core.Keyword(null,"triggers","triggers",2516997421),new cljs.core.PersistentHashSet(null, new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"close!","close!",3951350939),null], null), null));
 lt.plugins.vulcan.connect = (function connect(client){new cljs.core.Keyword(null,"socket","socket",4411822821).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,client)).on("end",(function (){return lt.object.raise.call(null,client,new cljs.core.Keyword(null,"close!","close!",3951350939));
 }));
-new cljs.core.Keyword(null,"socket","socket",4411822821).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,client)).on("error",(function (p1__9218_SHARP_){return lt.object.raise.call(null,client,new cljs.core.Keyword(null,"connection-failed","connection-failed",2408881534),p1__9218_SHARP_);
+new cljs.core.Keyword(null,"socket","socket",4411822821).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,client)).on("error",(function (p1__10139_SHARP_){return lt.object.raise.call(null,client,new cljs.core.Keyword(null,"connection-failed","connection-failed",2408881534),p1__10139_SHARP_);
 }));
-return new cljs.core.Keyword(null,"socket","socket",4411822821).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,client)).connect(new cljs.core.Keyword(null,"port","port",1017351155).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,client)),new cljs.core.Keyword(null,"host","host",1017112858).cljs$core$IFn$_invoke$arity$2(cljs.core.deref.call(null,client),"localhost"),(function (p1__9219_SHARP_){if(cljs.core.truth_(p1__9219_SHARP_))
+new cljs.core.Keyword(null,"socket","socket",4411822821).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,client)).on("timeout",(function (p1__10140_SHARP_){return lt.object.raise.call(null,client,new cljs.core.Keyword(null,"connection-failed","connection-failed",2408881534),p1__10140_SHARP_);
+}));
+return new cljs.core.Keyword(null,"socket","socket",4411822821).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,client)).connect(new cljs.core.Keyword(null,"port","port",1017351155).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,client)),new cljs.core.Keyword(null,"host","host",1017112858).cljs$core$IFn$_invoke$arity$2(cljs.core.deref.call(null,client),"localhost"),(function (p1__10141_SHARP_){if(cljs.core.truth_(p1__10141_SHARP_))
 {return null;
 } else
 {return lt.object.raise.call(null,client,new cljs.core.Keyword(null,"connect","connect",1965255772));
 }
 }));
 });
-lt.object.object_STAR_.call(null,new cljs.core.Keyword("lt.plugins.vulcan","firefox-lang","lt.plugins.vulcan/firefox-lang",1603510240),new cljs.core.Keyword(null,"tags","tags",1017456523),cljs.core.PersistentHashSet.EMPTY,new cljs.core.Keyword(null,"behaviors","behaviors",607554515),new cljs.core.PersistentVector(null, 1, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword("lt.plugins.vulcan","eval!","lt.plugins.vulcan/eval!",4782845693)], null),new cljs.core.Keyword(null,"triggers","triggers",2516997421),new cljs.core.PersistentHashSet(null, new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"eval!","eval!",1110791799),null], null), null));
+lt.object.object_STAR_.call(null,new cljs.core.Keyword("lt.plugins.vulcan","firefox-lang","lt.plugins.vulcan/firefox-lang",1603510240),new cljs.core.Keyword(null,"tags","tags",1017456523),new cljs.core.PersistentHashSet(null, new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"firefox.lang","firefox.lang",3385080661),null], null), null));
 lt.plugins.vulcan.lang = lt.object.create.call(null,new cljs.core.Keyword("lt.plugins.vulcan","firefox-lang","lt.plugins.vulcan/firefox-lang",1603510240));
 lt.plugins.vulcan.handle_message = (function handle_message(client,message){return cljs.core.print.call(null,message);
 });
-lt.plugins.vulcan.__BEH__send_BANG_ = (function __BEH__send_BANG_(client,message){lt.plugins.vulcan.handle_message.call(null,client,message);
-if(cljs.core._EQ_.call(null,"editor.eval.js",new cljs.core.Keyword(null,"command","command",1964298941).cljs$core$IFn$_invoke$arity$1(message)))
-{return null;
+lt.plugins.vulcan.__BEH__editor__DOT__eval__DOT__js = (function __BEH__editor__DOT__eval__DOT__js(client,request){var console = new cljs.core.Keyword(null,"session","session",2998892040).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,client)).Console;var info = new cljs.core.Keyword(null,"meta","meta",1017252215).cljs$core$IFn$_invoke$arity$1(request);var editor = lt.object.by_id.call(null,new cljs.core.Keyword(null,"ed-id","ed-id",1110205563).cljs$core$IFn$_invoke$arity$1(request));return console.evaluateJS(new cljs.core.Keyword(null,"code","code",1016963423).cljs$core$IFn$_invoke$arity$1(request),(function (error,response){if(cljs.core.truth_(response.exception))
+{return lt.object.raise.call(null,editor,new cljs.core.Keyword(null,"editor.eval.js.exception","editor.eval.js.exception",723801901),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"meta","meta",1017252215),info,new cljs.core.Keyword(null,"ex","ex",1013907493),response.exception.obj.preview], null));
 } else
-{return null;
+{return lt.object.raise.call(null,editor,new cljs.core.Keyword(null,"editor.eval.js.result","editor.eval.js.result",3021062051),new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"meta","meta",1017252215),info,new cljs.core.Keyword(null,"result","result",4374444943),response.result], null));
 }
+}));
+});
+lt.object.behavior_STAR_.call(null,new cljs.core.Keyword("lt.plugins.vulcan","editor.eval.js","lt.plugins.vulcan/editor.eval.js",1227651064),new cljs.core.Keyword(null,"reaction","reaction",4441361819),lt.plugins.vulcan.__BEH__editor__DOT__eval__DOT__js,new cljs.core.Keyword(null,"triggers","triggers",2516997421),new cljs.core.PersistentHashSet(null, new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword("lt.plugins.vulcan","editor.eval.js","lt.plugins.vulcan/editor.eval.js",1227651064),null], null), null));
+lt.plugins.vulcan.__BEH__send_BANG_ = (function __BEH__send_BANG_(client,message){return lt.object.raise.call(null,client,cljs.core.keyword.call(null,lt.plugins.vulcan._STAR_ns_name_STAR_,new cljs.core.Keyword(null,"command","command",1964298941).cljs$core$IFn$_invoke$arity$1(message)),new cljs.core.Keyword(null,"data","data",1016980252).cljs$core$IFn$_invoke$arity$1(message));
 });
 lt.object.behavior_STAR_.call(null,new cljs.core.Keyword("lt.plugins.vulcan","send!","lt.plugins.vulcan/send!",4795707817),new cljs.core.Keyword(null,"reaction","reaction",4441361819),lt.plugins.vulcan.__BEH__send_BANG_,new cljs.core.Keyword(null,"triggers","triggers",2516997421),new cljs.core.PersistentHashSet(null, new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"send!","send!",1123226891),null], null), null));
 lt.plugins.vulcan.__BEH__client__DOT__settings = (function __BEH__client__DOT__settings(client,info){return lt.objs.clients.handle_connection_BANG_.call(null,info);

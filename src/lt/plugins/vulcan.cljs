@@ -22,6 +22,8 @@
             [lt.util.cljs :refer [js->clj]])
     (:require-macros [lt.macros :refer [behavior defui]]))
 
+
+(def *ns-name* (name :lt.plugins.vulcan))
 (def *plugin-path* (:dir (plugins/by-name "vulcan")))
 (def *firefox-client-path* (files/join *plugin-path*
                                        "node_modules/firefox-client"))
@@ -29,6 +31,7 @@
 (def Buffer (js/require "buffer"))
 (def net (js/require "net"))
 (def FirefoxClient (js/require *firefox-client-path*))
+
 
 
 ;; Adds a connection to the Light Table's "Add connection" UI.
@@ -92,6 +95,7 @@
  :triggers #{:try-connect!}
  :reaction (fn [client _]
              (when (:port @client)
+               _
                (object/raise client :connect!))))
 
 (behavior
@@ -116,7 +120,9 @@
  ::set-session!
  :triggers #{:set-session!}
  :reaction (fn [client session]
-             (object/merge! client {:session session})
+             (object/merge! client {:session session
+                                    :type "Remote Debugging Protocol"
+                                    :commands #{:editor.eval.js}})
              (notifos/done-working "Firefox session is set")))
 
 (behavior
@@ -151,6 +157,7 @@
   When connection is clsoed ::close is triggered"
   (.on (:socket @client) "end" #(object/raise client :close!))
   (.on (:socket @client) "error" #(object/raise client :connection-failed %))
+  (.on (:socket @client) "timeout" #(object/raise client :connection-failed %))
   (.connect (:socket @client)
             (:port @client)
             (:host @client "localhost")
@@ -162,9 +169,7 @@
 
 
 (object/object* ::firefox-lang
-                :tags #{}
-                :behaviors [::eval!]
-                :triggers #{:eval!})
+                :tags #{:firefox.lang})
 
 (def lang (object/create ::firefox-lang))
 
@@ -172,14 +177,34 @@
   (print message))
 
 (behavior
+ ::editor.eval.js
+ :triggers #{::editor.eval.js}
+ :reaction (fn [client request]
+             (let [console (.-Console (:session @client))
+                   info (:meta request)
+                   editor (object/by-id (:ed-id request))]
+               (.evaluateJS console
+                            (:code request)
+                            (fn [error response]
+                              (if (.-exception response)
+                                (object/raise editor
+                                              :editor.eval.js.exception
+                                              {:meta info
+                                               :ex (.-preview (.-obj (.-exception response)))})
+                                (object/raise editor
+                                              :editor.eval.js.result
+                                              {:meta info
+                                               :result (.-result response)})))))))
+
+
+
+(behavior
  ::send!
  :triggers #{:send!}
  :reaction (fn [client message]
-             (handle-message client message)
-             (when (= "editor.eval.js" (:command message))
-               ;(object/raise this :changelive! (js->clj (last msg) :keywordize-keys true))
-               )
-             ))
+             (object/raise client
+                           (keyword *ns-name* (:command message))
+                           (:data message))))
 
 (behavior
  ::client.settings

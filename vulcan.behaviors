@@ -15,7 +15,9 @@
                    :lt.plugins.vulcan/init-session
                    :lt.plugins.vulcan/set-session!
 
-                   :lt.plugins.vulcan/send!]
+                   :lt.plugins.vulcan/send!
+                   :lt.plugins.vulcan/editor.eval.js
+                   ]
 
   :firefox.lang [:lt.plugins.vulcan/connect!]
   }
