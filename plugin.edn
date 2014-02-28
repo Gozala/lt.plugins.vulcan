@@ -4,4 +4,4 @@
  :source "https://github.com/Gozala/lt.plugins.vulcan"
  :desc "Firefox debugger client for Light Table"
  :behaviors "vulcan.behaviors"
- :dependencies {:javascript "0.0.1"}}
+ :dependencies {:Javascript "0.0.1"}}
