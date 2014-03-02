@@ -222,6 +222,41 @@
                                                  :result (eval/cljs-result-format (.-result response))}))))))))
 
 
+(defn firefox-parse-simple-grip [result]
+  (let [result-type (.-type result)]
+    (cond
+     (= result-type "undefined") js/undefined
+     (= result-type "null") (js* "null")
+     (= result-type "Infinity") js/Infinity
+     (= result-type "-Infinity") (- js/Infinity)
+     (= result-type "NaN") js/NaN
+     (= result-type "-0") 0
+     (= result-type "longString") (+ (.-initial result) "...")
+     :else result)))
+
+(defn firefox-parse-grip [client response cb err]
+  "Pretty-print the firefox output"
+  (let [result (.-result response)]
+    (if (= (.-type result) "object")
+      (.selectedTab (:socket @client)
+                        (fn [error tab]
+                          (if error
+                            (err error)
+                            (.ownProperties (.createJSObject tab result)
+                                            (fn [error properties]
+                                              (if error
+                                                (err error)
+                                                (cb properties)))))))
+      (cb (firefox-parse-simple-grip result)))))
+
+(def util-inspect (.-inspect (js/require "util")))
+
+(defn firefox-pretty-print [thing]
+  ;; TODO(nikita): better pretty-printing of property values
+  ;; Map firefox-parse-simple-grip over the values for better pretty-printing
+  ;; Except I don't know how to map over js objects in cljs.
+  ;; Might make sense to just port the grip parsing to javascript (and make it part of the firefox-client module)
+  (util-inspect thing false 0))
 
 (behavior
  ::editor.eval.js
@@ -238,11 +273,16 @@
                                               :editor.eval.js.exception
                                               {:meta info
                                                :ex (.-preview (.-obj (.-exception response)))})
-                                (object/raise editor
-                                              :editor.eval.js.result
-                                              {:meta info
-                                               :result (.-result response)})))))))
-
+                                (firefox-parse-grip client
+                                                       response
+                                                       (fn [value]
+                                                         (object/raise editor
+                                                           :editor.eval.js.result
+                                                           {:meta info
+                                                            :result (firefox-pretty-print value)
+                                                            :no-inspect true
+                                                            }))
+                                                       (fn []))))))))
 
 
 (behavior
